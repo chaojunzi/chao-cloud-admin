@@ -24,6 +24,7 @@ import com.chao.cloud.admin.sys.service.SysMenuService;
 import com.chao.cloud.admin.sys.shiro.ShiroUtils;
 import com.chao.cloud.common.exception.BusinessException;
 import com.chao.cloud.common.extra.mybatis.generator.menu.MenuAdmin;
+import com.chao.cloud.common.util.EntityUtil;
 import com.chao.cloud.common.util.RightsUtil;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -31,10 +32,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 
 /**
- * @功能：
- * @author： 超君子
- * @时间：2019-05-28
- * @version 1.0.0
+ * 超君子
+ * @author 薛超
+ * @since 2019年8月12日
+ * @version 1.0.7
  */
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
@@ -44,8 +45,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
 	@Override
 	public Set<String> listPerms(String roles) {
-		LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.<SysMenu>lambdaQuery().select(SysMenu::getMenuId,
-				SysMenu::getPerms);
+		LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.<SysMenu>lambdaQuery()
+				.select(SysMenu::getMenuId, SysMenu::getPerms).orderByAsc(SysMenu::getOrderNum);
 		List<SysMenu> menus = listUserMenu(roles, queryWrapper);
 		if (CollUtil.isNotEmpty(menus)) {
 			Set<String> result = CollUtil.newHashSet();
@@ -63,25 +64,25 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	@Override
 	public List<MenuLayuiDTO> listMenuLayuiTree(String roles) {
 		UserDTO user = ShiroUtils.getUser();
-		LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.<SysMenu>lambdaQuery().in(SysMenu::getType, SHOW_MENU_TYPE);
+		LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.<SysMenu>lambdaQuery()//
+				.in(SysMenu::getType, SHOW_MENU_TYPE)//
+				.orderByAsc(SysMenu::getOrderNum);
 		boolean admin = AdminConstant.ADMIN.equals(ShiroUtils.getUser().getUsername());
 		List<SysMenu> list = admin ? this.baseMapper.selectList(queryWrapper)
 				: this.listUserMenu(user.getRoles(), queryWrapper);
 		// 获取根节点
-		List<MenuLayuiDTO> trees = new ArrayList<>();
-		if (!CollUtil.isEmpty(list)) {
-			List<SysMenu> root = list.stream().filter(l -> l.getParentId().equals(0)).collect(Collectors.toList());
-			// 递归生成父子节点
-			root.forEach(r -> {
-				MenuLayuiDTO dto = new MenuLayuiDTO();
-				dto.setMenuId(r.getMenuId());
-				dto.setTitle(r.getName());
-				dto.setHref(r.getUrl());
-				dto.setIcon(r.getIcon());
-				// 子节点
-				this.genLeaf(dto, list);
-				trees.add(dto);
-			});
+		List<MenuLayuiDTO> trees = Collections.emptyList();
+		if (CollUtil.isNotEmpty(list)) {
+			trees = list.stream().map(r -> {
+				return MenuLayuiDTO.of()//
+						.setMenuId(r.getMenuId()) //
+						.setTitle(r.getName()) //
+						.setHref(r.getUrl()) //
+						.setIcon(r.getIcon()) //
+						.setParentId(r.getParentId());
+			}).collect(Collectors.toList());
+			// 递归处理
+			trees = EntityUtil.toTreeAnnoList(trees, AdminConstant.TREE_DEFAULT_VALUE);
 		}
 		return trees;
 	}
@@ -130,27 +131,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 		// 删除所有菜单id
 		int del = this.baseMapper.deleteBatchIds(menuIds);
 		return del > 0;
-	}
-
-	private void genLeaf(MenuLayuiDTO root, List<SysMenu> data) {
-		// 补充子节点
-		List<SysMenu> rootLeaf = data.stream().filter(d -> d.getParentId().equals(root.getMenuId()))
-				.collect(Collectors.toList());
-		if (!CollUtil.isEmpty(rootLeaf)) {
-			List<MenuLayuiDTO> trees = CollUtil.newArrayList();
-			//
-			rootLeaf.forEach(r -> {
-				MenuLayuiDTO dto = new MenuLayuiDTO();
-				dto.setMenuId(r.getMenuId());
-				dto.setTitle(r.getName());
-				dto.setHref(r.getUrl());
-				dto.setIcon(r.getIcon());
-				// 子节点
-				this.genLeaf(dto, data);
-				trees.add(dto);
-			});
-			root.setChildren(trees);
-		}
 	}
 
 	/**

@@ -107,7 +107,7 @@ layui.use([ 'bodyTab', 'form', 'element', 'layer', 'jquery' ], function() {
 			for (var i = 0; i < menu.length; i++) {
 				openTitle = '';
 				if (menu[i].icon) {
-					if (menu[i].icon.split("-")[0] == 'icon') {
+					if (menu[i].icon.indexOf('layui-icon') == 0) {
 						openTitle += '<i class="seraph ' + menu[i].icon + '"></i>';
 					} else {
 						openTitle += '<i class="layui-icon">' + menu[i].icon + '</i>';
@@ -167,7 +167,7 @@ function strToNumber(str) {
 	}
 	return result;
 }
-//是否为正整数
+// 是否为正整数
 function isPositiveInteger(s) {
 	var re = /^[0-9]+$/;
 	return re.test(s)
