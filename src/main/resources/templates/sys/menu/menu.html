@@ -29,9 +29,10 @@
 			base : '/sys/'
 		}).extend({
 			treetable : '/js/treetable'
-		}).use([ 'table', 'treetable' ], function() {
+		}).use([ 'table', 'treetable', 'form' ], function() {
 			var $ = layui.jquery;
 			var table = layui.table;
+			var form = layui.form;
 			var treetable = layui.treetable;
 			// 渲染表格
 			var renderTable = function() {
@@ -83,6 +84,14 @@
 						align : 'center',
 						title : '排序'
 					}, {
+						align : 'center',
+						field : 'isShow',
+						title : '是否展示',
+						templet : function(d) {
+							var check = d.isShow ? "checked" : "";
+							return '<input type="checkbox" lay-filter="isShow" lay-skin="switch" lay-text="展示|隐藏" ' +check+  ' data-id="'+d.menuId+'"/>'
+						},
+					}, {
 						templet : '#menu-state',
 						align : 'center',
 						title : '操作'
@@ -109,7 +118,6 @@
 					renderTable();
 					break;
 				}
-				;
 			});
 
 			//监听工具条
@@ -123,6 +131,19 @@
 				} else if (layEvent === 'save') {//添加
 					openSave(data.menuId);
 				}
+			});
+
+			//状态
+			form.on('switch(isShow)', function(data) {
+				var isShow = data.elem.checked;
+				//获取所需属性值
+				var menuId = $(this).attr("data-id")
+				//修改
+				ajaxPost("/sys/menu/update", {
+					menuId : menuId,
+					isShow : isShow
+				})
+				return false;
 			});
 
 			function remove(id) {

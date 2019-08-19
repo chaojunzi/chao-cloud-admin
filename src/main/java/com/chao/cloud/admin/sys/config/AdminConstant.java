@@ -1,10 +1,12 @@
 package com.chao.cloud.admin.sys.config;
 
 public interface AdminConstant {
+	// 管理员属性
 	String ADMIN = "admin";
 	Integer ADMIN_ID = 1;
-	// 自动去除表前缀
-	String AUTO_REOMVE_PRE = "true";
+	// 禁用-启用
+	Boolean DISABLE = false;
+	Boolean ENABLE = true;
 	// 停止计划任务
 	String STATUS_RUNNING_STOP = "stop";
 	// 开启计划任务

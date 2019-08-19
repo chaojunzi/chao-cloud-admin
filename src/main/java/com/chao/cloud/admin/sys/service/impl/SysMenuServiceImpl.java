@@ -65,6 +65,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	public List<MenuLayuiDTO> listMenuLayuiTree(String roles) {
 		UserDTO user = ShiroUtils.getUser();
 		LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.<SysMenu>lambdaQuery()//
+				.eq(SysMenu::getIsShow, AdminConstant.ENABLE)//
 				.in(SysMenu::getType, SHOW_MENU_TYPE)//
 				.orderByAsc(SysMenu::getSort);
 		boolean admin = AdminConstant.ADMIN.equals(ShiroUtils.getUser().getUsername());
