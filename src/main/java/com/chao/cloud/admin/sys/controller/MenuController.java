@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.chao.cloud.admin.sys.constant.AdminConstant;
+import com.chao.cloud.admin.sys.config.AdminConstant;
 import com.chao.cloud.admin.sys.dal.entity.SysMenu;
 import com.chao.cloud.admin.sys.domain.dto.MenuLayuiDTO;
 import com.chao.cloud.admin.sys.log.AdminLog;
@@ -38,8 +38,6 @@ import com.chao.cloud.common.extra.mybatis.generator.menu.MenuMapping;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Filter;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
@@ -135,9 +133,6 @@ public class MenuController extends BaseController {
 	@RequestMapping("/save")
 	@ResponseBody
 	Response<String> save(SysMenu menu) {
-		DateTime date = DateUtil.date();
-		menu.setGmtCreate(date);
-		menu.setGmtModified(date);
 		if (sysMenuService.save(menu)) {
 			return Response.ok();
 		}
@@ -150,7 +145,6 @@ public class MenuController extends BaseController {
 	@RequestMapping("/update")
 	@ResponseBody
 	Response<String> update(SysMenu menu) {
-		menu.setGmtModified(DateUtil.date());
 		if (sysMenuService.updateById(menu)) {
 			return Response.ok();
 		}

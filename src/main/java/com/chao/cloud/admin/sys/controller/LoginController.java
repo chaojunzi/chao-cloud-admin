@@ -1,12 +1,11 @@
 package com.chao.cloud.admin.sys.controller;
 
-import java.io.File;
 import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.chao.cloud.admin.sys.domain.vo.LoginVO;
 import com.chao.cloud.admin.sys.log.AdminLog;
 import com.chao.cloud.admin.sys.shiro.ShiroUtils;
 import com.chao.cloud.common.entity.Response;
@@ -27,7 +27,6 @@ import com.chao.cloud.common.exception.BusinessException;
 import com.chao.cloud.common.util.HyalineCaptchaUtil;
 import com.chao.cloud.common.util.HyalineCaptchaUtil.HyalineCircleCaptcha;
 
-import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
@@ -55,26 +54,23 @@ public class LoginController extends BaseController {
 
 	@GetMapping("/login")
 	public String login(Model model) {
-		return "login";
+		return "redirect:/login/login.html";
 	}
 
 	@AdminLog("登录")
 	@PostMapping("/login")
 	@ResponseBody
-	public Response<String> ajaxLogin(@NotBlank(message = "请输入用户名") String username, //
-			@NotBlank(message = "请输入密码") String password, //
-			@NotBlank(message = "请输入验证码") String verify, //
-			HttpServletRequest request) {
+	public Response<String> ajaxLogin(@Valid LoginVO vo, HttpServletRequest request) {
 		String random = (String) request.getSession().getAttribute(RANDOMCODEKEY);
 		if (StrUtil.isBlank(random)) {
 			throw new BusinessException("请刷新验证码");
 		}
-		if (!verify.equals(random)) {
+		if (!vo.getVerify().equals(random)) {
 			throw new BusinessException("请输入正确的验证码");
 		}
 		// 摘要算法
-		password = DigestUtil.md5Hex(username + password);
-		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+		String password = DigestUtil.md5Hex(vo.getUserName() + vo.getPassword());
+		UsernamePasswordToken token = new UsernamePasswordToken(vo.getUserName(), password);
 		Subject subject = SecurityUtils.getSubject();
 		try {
 			subject.login(token);
@@ -133,10 +129,6 @@ public class LoginController extends BaseController {
 		} catch (Exception e) {
 			log.error("获取验证码失败>>>> ", e);
 		}
-	}
-
-	public static void main(String[] args) {
-		ImgUtil.scale(new File("D:/user.png"), new File("D:/a.png"), 0.5F);
 	}
 
 }

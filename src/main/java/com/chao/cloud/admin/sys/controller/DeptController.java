@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.chao.cloud.admin.sys.constant.AdminConstant;
+import com.chao.cloud.admin.sys.config.AdminConstant;
 import com.chao.cloud.admin.sys.dal.entity.SysDept;
 import com.chao.cloud.admin.sys.dal.entity.SysUser;
 import com.chao.cloud.admin.sys.domain.dto.SelectTreeDTO;

@@ -108,7 +108,7 @@ public class ChaoRichtextController {
 			html = FileUtil.readUtf8String(chaoRichtext.getContent());
 		}
 		chaoRichtext.setContent(html);// 还原
-		model.addAttribute("domain", ftpConfig.getRealm());
+		model.addAttribute("realm", ftpConfig.getRealm());
 		model.addAttribute("chaoRichtext", chaoRichtext);
 		return "chao/richtext/edit";
 	}

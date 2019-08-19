@@ -1,4 +1,4 @@
-package com.chao.cloud.admin.sys.constant;
+package com.chao.cloud.admin.sys.config;
 
 public interface AdminConstant {
 	String ADMIN = "admin";

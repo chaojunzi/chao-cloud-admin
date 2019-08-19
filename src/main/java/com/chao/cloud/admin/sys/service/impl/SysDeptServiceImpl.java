@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.chao.cloud.admin.sys.constant.AdminConstant;
+import com.chao.cloud.admin.sys.config.AdminConstant;
 import com.chao.cloud.admin.sys.dal.entity.SysDept;
 import com.chao.cloud.admin.sys.dal.mapper.SysDeptMapper;
 import com.chao.cloud.admin.sys.domain.dto.SelectTreeDTO;

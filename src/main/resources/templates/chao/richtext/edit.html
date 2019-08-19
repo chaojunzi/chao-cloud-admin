@@ -19,7 +19,7 @@
 			<label class="layui-form-label">展示图：</label>
 			<div class="layui-inline">
 				<input type="hidden" name="img" lay-verify="required" th:value="${chaoRichtext.img}">
-				<img class="layui-upload-img" id="showImg" th:src="@{${domain}+${chaoRichtext.img}}"
+				<img class="layui-upload-img" id="showImg" th:src="@{${realm}+${chaoRichtext.img}}"
 					style="width: 135px; height: 135px;">
 			</div>
 			<div class="layui-inline">
@@ -90,7 +90,7 @@
 					console.log(res);
 					var data = res.data;
 					$("[name=img]").val(data.src);
-					$("#showImg").attr("src", data.domain + data.src);
+					$("#showImg").attr("src", data.realm + data.src);
 
 				}
 			});

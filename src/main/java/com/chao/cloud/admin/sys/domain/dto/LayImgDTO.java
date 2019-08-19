@@ -13,7 +13,7 @@ public class LayImgDTO {
 	/**
 	 * 图片域名
 	 */
-	private String domain;
+	private String realm;
 	/**
 	 * 图片名称（可选）
 	 */

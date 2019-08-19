@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.chao.cloud.admin.sys.constant.AdminConstant;
+import com.chao.cloud.admin.sys.config.AdminConstant;
 import com.chao.cloud.admin.sys.dal.entity.SysUser;
 import com.chao.cloud.admin.sys.dal.mapper.SysUserMapper;
 import com.chao.cloud.admin.sys.domain.dto.UserDTO;

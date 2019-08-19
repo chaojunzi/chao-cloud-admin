@@ -13,7 +13,7 @@ var adminConfig = {
 	lockPasswd : '456789',// 锁屏密码
 	logoTitle : 'Chao-后台管理', // 主页左上角logo 标题
 	headImg : '/sys/images/face.jpg',// 头像
-	footer : 'Copyright @2019-2029 Chao Junzi',// 页脚
+	footer : 'Copyright @2019 Chao Junzi',// 页脚
 }
 
 /**

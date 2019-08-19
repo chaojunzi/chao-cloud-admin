@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.chao.cloud.admin.sys.constant.AdminConstant;
+import com.chao.cloud.admin.sys.config.AdminConstant;
 import com.chao.cloud.admin.sys.dal.entity.SysMenu;
 import com.chao.cloud.admin.sys.dal.entity.SysRole;
 import com.chao.cloud.admin.sys.dal.mapper.SysMenuMapper;
@@ -46,7 +46,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	@Override
 	public Set<String> listPerms(String roles) {
 		LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.<SysMenu>lambdaQuery()
-				.select(SysMenu::getMenuId, SysMenu::getPerms).orderByAsc(SysMenu::getOrderNum);
+				.select(SysMenu::getMenuId, SysMenu::getPerms).orderByAsc(SysMenu::getSort);
 		List<SysMenu> menus = listUserMenu(roles, queryWrapper);
 		if (CollUtil.isNotEmpty(menus)) {
 			Set<String> result = CollUtil.newHashSet();
@@ -66,7 +66,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 		UserDTO user = ShiroUtils.getUser();
 		LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.<SysMenu>lambdaQuery()//
 				.in(SysMenu::getType, SHOW_MENU_TYPE)//
-				.orderByAsc(SysMenu::getOrderNum);
+				.orderByAsc(SysMenu::getSort);
 		boolean admin = AdminConstant.ADMIN.equals(ShiroUtils.getUser().getUsername());
 		List<SysMenu> list = admin ? this.baseMapper.selectList(queryWrapper)
 				: this.listUserMenu(user.getRoles(), queryWrapper);

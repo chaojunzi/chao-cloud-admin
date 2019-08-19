@@ -62,18 +62,12 @@ public class SysMenu implements Serializable {
 	/**
 	 * 排序
 	 */
-	private Integer orderNum;
+	private Integer sort;
 
 	/**
 	 * 创建时间
 	 */
 	@DateTimeFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
-	private Date gmtCreate;
-
-	/**
-	 * 修改时间
-	 */
-	@DateTimeFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
-	private Date gmtModified;
+	private Date createTime;
 
 }
