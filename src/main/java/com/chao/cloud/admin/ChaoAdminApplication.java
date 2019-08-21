@@ -4,11 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
-import com.chao.cloud.common.config.exception.EnableGlobalException;
-import com.chao.cloud.common.config.web.EnableWeb;
 import com.chao.cloud.common.extra.ftp.annotation.EnableFtp;
 import com.chao.cloud.common.extra.mybatis.annotation.EnableMybatisPlus;
 import com.chao.cloud.common.extra.token.annotation.EnableFormToken;
+import com.chao.cloud.common.web.annotation.EnableGlobalException;
+import com.chao.cloud.common.web.annotation.EnableWeb;
 
 /**
  * admin-后台管理系统
