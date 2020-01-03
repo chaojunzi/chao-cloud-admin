@@ -29,7 +29,6 @@ import com.chao.cloud.admin.sys.dal.entity.SysMenu;
 import com.chao.cloud.admin.sys.domain.dto.MenuLayuiDTO;
 import com.chao.cloud.admin.sys.log.AdminLog;
 import com.chao.cloud.admin.sys.service.SysMenuService;
-import com.chao.cloud.common.core.SpringContextUtil;
 import com.chao.cloud.common.entity.Response;
 import com.chao.cloud.common.exception.BusinessException;
 import com.chao.cloud.common.extra.mybatis.generator.menu.MenuAdmin;
@@ -44,13 +43,13 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 
 /**
  * 
- * @功能：
- * @author： 薛超
- * @时间：2019年5月8日
- * @version 2.0
+ * @功能： @author： 薛超
+ * 
+ * @时间：2019年5月8日 @version 2.0
  */
 @RequestMapping("/sys/menu")
 @Controller
@@ -81,6 +80,7 @@ public class MenuController extends BaseController {
 
 	/**
 	 * 菜单选择
+	 * 
 	 * @return
 	 */
 	@Cacheable(cacheNames = "menu")
@@ -166,6 +166,7 @@ public class MenuController extends BaseController {
 
 	/**
 	 * 系统左侧导航菜单
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/leftList")
@@ -252,7 +253,7 @@ public class MenuController extends BaseController {
 	}
 
 	public void initMenuAdmin() {
-		Map<String, Object> map = SpringContextUtil.getApplicationContext().getBeansWithAnnotation(MenuMapping.class);
+		Map<String, Object> map = SpringUtil.getApplicationContext().getBeansWithAnnotation(MenuMapping.class);
 		if (MapUtil.isNotEmpty(map)) {
 			// 循环
 			Long menuId = 1L;
